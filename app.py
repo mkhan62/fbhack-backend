@@ -13,7 +13,6 @@ def index():
     """Return all users."""
     db = Firebase()
     result = db.read_all_users()
-    check_activities()
     return jsonify(result)
 
 
