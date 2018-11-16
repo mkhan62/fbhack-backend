@@ -8,6 +8,7 @@ activities = {}
 ready_activities = {}
 users = set()
 
+
 @app.route('/', methods=['GET'])
 def index():
     """Return all users."""
@@ -37,11 +38,19 @@ def add():
 
 @app.route('/addUser', methods=['POST'])
 def add_user():
+    """Add user."""
     data = request.get_json()
     print(data)
     users.add(data['userId'])
     print(users)
     # users.add(req['userId'])
+    return jsonify({'message': True})
+
+
+@app.route('/deleteAll', methods=['POST'])
+def delete_all():
+    """Delete all users."""
+    users.clear()
     return jsonify({'message': True})
 
 
@@ -61,19 +70,6 @@ def delete():
     db = Firebase()
     result = db.delete_user(data['userId'])
     return jsonify(result)
-
-
-# @app.route('/activities', methods=['GET'])
-# def get_activites():
-#     """Get all possible impromptu activities."""
-#     # data = request.args
-#     data = {"location": "Seattle", "availability": "Thursday", "interest": "zumba", "userId": "12322"}
-#     db = Firebase()
-#     result = db.get_impromptu(data)
-#     if result["message"] is True:
-#         print(result)
-#         db.add_ready(ready_activities)
-#     return jsonify(result)
 
 
 @app.route('/userActive', methods=['GET'])
