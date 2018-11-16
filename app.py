@@ -39,10 +39,10 @@ def add():
 @app.route('/addUser', methods=['POST'])
 def add_user():
     """Add user."""
+    db = Firebase()
     data = request.get_json()
-    print(data)
     users.add(data['userId'])
-    print(users)
+    db.add_userId(data['userId'])
     # users.add(req['userId'])
     return jsonify({'message': True})
 

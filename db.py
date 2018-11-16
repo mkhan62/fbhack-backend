@@ -22,6 +22,11 @@ class Firebase:
         self.db.child("activity").child(data["userId"]).set(data)
         return {"message": True}
 
+    def add_userId(self, id):
+        """Add user to db."""
+        self.db.child("users").child(id).set(id)
+        return {"message": True}
+
     def add_ready(self, ready_activities):
         """Add ready activities."""
         for event, values in ready_activities.items():
