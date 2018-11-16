@@ -9,14 +9,14 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def index():
     """Return all users"""
-    result = db.read_all()
+    result = db.read_all_users()
     return jsonify(result)
 
 
 @app.route('/add', methods=['POST'])
 def add():
-    data = request.data
-    result = db.add_entry(data)
+    data = request.get_json()
+    result = db.add_user(data)
     return jsonify(result)
 
 

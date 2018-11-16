@@ -17,12 +17,12 @@ class Firebase:
         self.firebase = pyrebase.initialize_app(config)
         self.db = self.firebase.database()
 
-    def add_entry(self, data):
+    def add_user(self, data):
         """Add user to db."""
         self.db.child("activity").child(data["userId"]).set(data)
         return {"message": True}
 
-    def read_all(self):
+    def read_all_users(self):
         """Return all entries."""
         return self.db.child("activity").get().val()
 
@@ -30,7 +30,7 @@ class Firebase:
         """Lookup user."""
         return self.db.child("activity").child(key).get().val()
 
-    def delete_entry(self, key):
+    def delete_user(self, key):
         """Delete User."""
         if self.find_user(key):
             self.db.child("activity").child(key).remove()
