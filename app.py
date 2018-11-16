@@ -6,7 +6,7 @@ import requests
 app = Flask(__name__)
 activities = {}
 ready_activities = {}
-
+users = set()
 
 @app.route('/', methods=['GET'])
 def index():
@@ -33,6 +33,16 @@ def add():
     result = db.add_user(data)
     check_activities()
     return jsonify(result)
+
+
+@app.route('/addUser', methods=['POST'])
+def add_user():
+    data = request.get_json()
+    print(data)
+    users.add(data['userId'])
+    print(users)
+    # users.add(req['userId'])
+    return jsonify({'message': True})
 
 
 @app.route('/update', methods=['POST'])
