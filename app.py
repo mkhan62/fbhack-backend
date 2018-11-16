@@ -93,15 +93,17 @@ def left():
 def send():
     """Send meassage to user."""
     d = request.get_json()
+    print(d)
     headers = {
         'Content-Type': 'application/json',
     }
     params = (
         ('access_token', 'EAAIKXN8ZAjBsBANToUfJbTPviKjhaQhvCky9jyAOKZArf0V25ensSdZCleC2sIg1Qv2MCa6x9PDRzin1YQCr3X57nWrP494Lfea71sAqTP7b4gQ7SKmJZBeIZAWZAwz6ZBeQu3PrqLZAYn3CGwcqC4TeEMI2KsTgjaRMTuApITEYCAZDZD'),
     )
-    data = '{"recipient":{"id":'+d['userId']+'},"message":{"text":'+d['message']+'}'
+    data = '{\n  "recipient":{\n    "id":"1964122107006784"\n  },\n  "message":{\n    "text":"We have an activity, stay tuned! :D"\n  }\n}'
+
     response = requests.post('https://graph.facebook.com/v2.6/me/messages', headers=headers, params=params, data=data)
-    return {"message": response.text}
+    return jsonify({"message": response.text})
 
 
 def check_activities():
