@@ -44,7 +44,8 @@ def add_user():
     users.add(data['userId'])
     db.add_userId(data['userId'])
     num = db.get_num_users()
-    if not num:
+    print(num)
+    if num:
         for key, val in num.items():
             send_message(key, "Hi ya'll! Since you are all interested in hacking and are free on Saturday, I would suggest meeting on facebook headquarters. Btw, this group consists of Mete, Adi and Hamza, have fun!")
     return jsonify({'message': True})

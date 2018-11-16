@@ -19,7 +19,8 @@ class Firebase:
 
     def get_num_users(self):
         data = self.db.child('users').get().val()
-        return data if len(data) >= 3 else None
+        if len(data) >= 3:
+            return data
 
 
     def add_user(self, data):
