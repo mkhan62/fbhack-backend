@@ -43,7 +43,10 @@ def add_user():
     data = request.get_json()
     users.add(data['userId'])
     db.add_userId(data['userId'])
-    # users.add(req['userId'])
+    num = db.get_num_users()
+    if not num:
+        for key, val in num.items():
+            send_message(key, "Hi ya'll! Since you are all interested in hacking and are free on Saturday, I would suggest meeting on facebook headquarters. Btw, this group consists of Mete, Adi and Hamza, have fun!")
     return jsonify({'message': True})
 
 
@@ -95,6 +98,32 @@ def left():
             break
     return jsonify({"userIds": res})
 
+
+def send_message(realUserId, realMessage):
+    """Send meassage to user."""
+    headers = {
+        'Content-Type': 'application/json',
+    }
+    params = (
+        ('access_token', 'EAAIKXN8ZAjBsBANToUfJbTPviKjhaQhvCky9jyAOKZArf0V25ensSdZCleC2sIg1Qv2MCa6x9PDRzin1YQCr3X57nWrP494Lfea71sAqTP7b4gQ7SKmJZBeIZAWZAwz6ZBeQu3PrqLZAYn3CGwcqC4TeEMI2KsTgjaRMTuApITEYCAZDZD'),
+    )
+
+    recipient = '{ \"recipient\":{'
+
+    id = "\"id\":"
+
+    message = "},\n  \"message\":{\n    \"text\":"
+
+
+    lastStrin = "\n  }\n}"
+    data = '{\n  "recipient":{\n    "id":"1964122107006784"\n  },\n  "message":{\n    "text":"We have an activity, stay tuned! :D"\n  }\n}'
+
+    realData = (recipient + id + realUserId + message + realMessage + lastStrin)
+
+    response = requests.post('https://graph.facebook.com/v2.6/me/messages', headers=headers, params=params, data=realData)
+    db = Firebase()
+    db.add_message(message)
+    return jsonify({"message": True})
 
 @app.route('/sendMessage', methods=['POST'])
 def send():

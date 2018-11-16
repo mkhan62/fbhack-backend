@@ -17,6 +17,11 @@ class Firebase:
         self.firebase = pyrebase.initialize_app(config)
         self.db = self.firebase.database()
 
+    def get_num_users(self):
+        data = self.db.child('users').get().val()
+        return data if len(data) >= 3 else None
+
+
     def add_user(self, data):
         """Add user to db."""
         self.db.child("activity").child(data["userId"]).set(data)
