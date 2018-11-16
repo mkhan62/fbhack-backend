@@ -22,6 +22,34 @@ class Firebase:
         self.db.child("activity").child(data["userId"]).set(data)
         return {"message": True}
 
+    def add_ready(self, ready_activities):
+        """Add ready activities."""
+        for event, values in ready_activities.items():
+            self.db.child('active').child(event).set(list(values))
+        return {"message": True}
+
+    def add_message(self, messsage):
+        """Add message to db."""
+        if not self.find_message(messsage):
+            self.db.child('messages').set(messsage)
+            return {"message": True}
+        return {"message": False}
+
+    def find_message(self, message):
+        """Lookup message."""
+        msgs = self.db.child('messages').get().val()
+        if not msgs:
+            return {"message": False}
+        if message in msgs:
+            return {'message': True}
+        return {"message": False}
+
+    # def get_impromptu(self, data):
+    #     """Lookup impromptu event."""
+    #     curr_acts = self.db.child('active').get().val()
+    #     key = (data['location'], data['availability'], data['interest'])
+    #     return {"message": True, "activity": key, "users": curr_acts[key]} if str(key) in curr_acts else {"message": False}
+
     def read_all_users(self):
         """Return all entries."""
         return self.db.child("activity").get().val()

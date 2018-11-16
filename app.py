@@ -53,16 +53,17 @@ def delete():
     return jsonify(result)
 
 
-@app.route('/activities', methods=['GET'])
-def get_activites():
-    """Get all possible activities."""
-    pass
-
-
-@app.route('/activitiesImpromptu', methods=['GET'])
-def get_activites_impromptu():
-    """Get impromptu possible activities."""
-    pass
+# @app.route('/activities', methods=['GET'])
+# def get_activites():
+#     """Get all possible impromptu activities."""
+#     # data = request.args
+#     data = {"location": "Seattle", "availability": "Thursday", "interest": "zumba", "userId": "12322"}
+#     db = Firebase()
+#     result = db.get_impromptu(data)
+#     if result["message"] is True:
+#         print(result)
+#         db.add_ready(ready_activities)
+#     return jsonify(result)
 
 
 @app.route('/userActive', methods=['GET'])
@@ -72,7 +73,7 @@ def active():
     for key, value in ready_activities.items():
         if data['userId'] in value:
             return jsonify({"message": True})
-    return jsonify({"message": False})
+    return jsonify({"message": False, "acts": ready_activities})
 
 
 @app.route('/usersLeft', methods=['GET'])
@@ -117,7 +118,20 @@ def send():
     realData = (recipient + id + realUserId + message + realMessage + lastStrin)
 
     response = requests.post('https://graph.facebook.com/v2.6/me/messages', headers=headers, params=params, data=realData)
+    db = Firebase()
+    db.add_message(message)
     return jsonify({"message": response.text})
+
+
+@app.route('/findMessage', methods=['GET'])
+def foo():
+    """Lookup message"""
+    # data = request.args
+    data = {}
+    data["message"] = "jdwkclwcwlxmwx"
+    db = Firebase()
+    result = db.find_message(data['message'])
+    return jsonify(result)
 
 
 def check_activities():
@@ -129,12 +143,12 @@ def check_activities():
             key = (row['location'], row['availability'], interest)
             if key in activities:
                 activities[key].add(row['userId'])
-                if len(activities[key]) >= 4:
+                if len(activities[key]) >= 2:
                     ready_activities[key] = activities[key]
                     activities.pop(key, None)
             else:
                 activities[key] = set([row['userId']])
-
+    db.add_ready(ready_activities)
 
 if __name__ == '__main__':
     app.run()
