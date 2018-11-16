@@ -39,7 +39,7 @@ def add():
 @app.route('/addUser', methods=['POST'])
 def add_user():
     """Add user."""
-    message = "Hi ya ll! Since you are all interested in hacking and are free on Saturday, I would suggest meeting on facebook headquarters. Btw, this group consists of Mete, Adi and Hamza, have fun!"
+    message = "Hi ya ll, I have arranged you a group and converted this to a group chat! Since you are all interested in hacking and are free on Saturday, I would suggest meeting on facebook headquarters. Btw, this group consists of Mete, Adi and Hamza, have fun! "
     db = Firebase()
     data = request.get_json()
     users.add(data['userId'])
