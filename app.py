@@ -108,26 +108,25 @@ def check_activities():
     """Check ready events."""
     db = Firebase()
     data = db.read_all_users()
-    for row in data:
-        if row:
-            for interest in row['interests']:
-                key = (row['location'], row['availability'], interest)
-                if key in activities:
-                    activities[key].add(row['userId'])
-                    if len(activities[key]) >= 4:
-                        ready_activities[key] = activities[key]
-                        activities.pop(key, None)
-                else:
-                    activities[key] = set([row['userId']])
-    headers = {
-        'Content-Type': 'application/json',
-    }
-    params = (
-        ('access_token', 'EAAIKXN8ZAjBsBANToUfJbTPviKjhaQhvCky9jyAOKZArf0V25ensSdZCleC2sIg1Qv2MCa6x9PDRzin1YQCr3X57nWrP494Lfea71sAqTP7b4gQ7SKmJZBeIZAWZAwz6ZBeQu3PrqLZAYn3CGwcqC4TeEMI2KsTgjaRMTuApITEYCAZDZD'),
-    )
-    data = '{\n  "recipient":{\n    "id":"1964122107006784"\n  },\n  "message":{\n    "text":"We have an activity, stay tuned! :D"\n  }\n}'
-
-    response = requests.post('https://graph.facebook.com/v2.6/me/messages', headers=headers, params=params, data=data)
+    for i, row in data.items():
+        for interest in row['interests']:
+            key = (row['location'], row['availability'], interest)
+            if key in activities:
+                activities[key].add(row['userId'])
+                if len(activities[key]) >= 4:
+                    ready_activities[key] = activities[key]
+                    activities.pop(key, None)
+            else:
+                activities[key] = set([row['userId']])
+    # headers = {
+    #     'Content-Type': 'application/json',
+    # }
+    # params = (
+    #     ('access_token', 'EAAIKXN8ZAjBsBANToUfJbTPviKjhaQhvCky9jyAOKZArf0V25ensSdZCleC2sIg1Qv2MCa6x9PDRzin1YQCr3X57nWrP494Lfea71sAqTP7b4gQ7SKmJZBeIZAWZAwz6ZBeQu3PrqLZAYn3CGwcqC4TeEMI2KsTgjaRMTuApITEYCAZDZD'),
+    # )
+    # data = '{\n  "recipient":{\n    "id":"1964122107006784"\n  },\n  "message":{\n    "text":"We have an activity, stay tuned! :D"\n  }\n}'
+    #
+    # response = requests.post('https://graph.facebook.com/v2.6/me/messages', headers=headers, params=params, data=data)
 
 
 if __name__ == '__main__':
