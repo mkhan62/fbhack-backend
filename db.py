@@ -28,12 +28,10 @@ class Firebase:
             self.db.child('active').child(event).set(list(values))
         return {"message": True}
 
-    def add_message(self, messsage):
+    def add_message(self, message):
         """Add message to db."""
-        if not self.find_message(messsage):
-            self.db.child('messages').set(messsage)
-            return {"message": True}
-        return {"message": False}
+        self.db.child('messages').child(message).set(message)
+        return {"message": True}
 
     def find_message(self, message):
         """Lookup message."""
