@@ -21,7 +21,7 @@ def index():
 def read_user():
     """Read a single user."""
     db = Firebase()
-    data = request.get_json()
+    data = request.args
     result = db.find_user(data['userId'])
     return jsonify(result)
 
@@ -68,18 +68,18 @@ def get_activites_impromptu():
 @app.route('/userActive', methods=['GET'])
 def active():
     """Check if user is active."""
-    data = request.get_json()
+    data = request.args
     for key, value in ready_activities.items():
         if data['userId'] in value:
-            return {"message": True}
-    return {"message": False}
+            return jsonify({"message": True})
+    return jsonify({"message": False})
 
 
 @app.route('/usersLeft', methods=['GET'])
 def left():
     """Leftover people in chat."""
     res = []
-    data = request.get_json()
+    data = request.args
     for key, value in ready_activities.items():
         if data['userId'] in value:
             for id in value:
