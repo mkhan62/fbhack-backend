@@ -31,6 +31,7 @@ def add():
     db = Firebase()
     data = request.get_json()
     result = db.add_user(data)
+    check_activities()
     return jsonify(result)
 
 
