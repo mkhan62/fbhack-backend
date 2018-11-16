@@ -97,13 +97,12 @@ def left():
     db = Firebase()
     d = db.get_all_users()
     for key, value in d.items():
-        if data['userId'] !== key:
+        if data['userId'] != key:
             res.append(key)
     return jsonify({"userIds": res})
 
 
 def send_message(userId, message):
-
     realUserId = f'"{userId}"'
     realMessage = f'"{message}"'
     """Send meassage to user."""
