@@ -1,2 +1,6 @@
 .DS_Store
 __pycache__/
+locations.txt
+names.txt
+populate.py
+location.txt

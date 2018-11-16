@@ -6,7 +6,7 @@ class Firebase:
     """Manage db and client traffic."""
 
     def __init__(self):
-        """Khan."""
+        """Configure data, create instance."""
         config = {
           "apiKey": "AIzaSyAwqbx-DLKxeY4oO7Z7m5kSxq8kjIpvaQc",
           "authDomain": "fbhack-3f5eb.firebaseapp.com",
@@ -30,9 +30,24 @@ class Firebase:
         """Lookup user."""
         return self.db.child("activity").child(key).get().val()
 
+    def update_user(self, data):
+        """Update a user profile."""
+        if self.find_user(data['userId']):
+            self.db.child(data['userId']).update(data)
+            return {"message": "Successfully updated user info!"}
+        return {"message": "User does not exist."}
+
     def delete_user(self, key):
         """Delete User."""
         if self.find_user(key):
             self.db.child("activity").child(key).remove()
             return {"message": "Entry successfully deleted"}
         return {"message": "User doesn't exist"}
+
+    def get_activites(self):
+        """Get potential activities which can happend now."""
+        pass
+
+    def get_impromptu_activities(self):
+        """Spontaneous activity scheduling."""
+        pass
