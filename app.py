@@ -39,6 +39,7 @@ def add():
 @app.route('/addUser', methods=['POST'])
 def add_user():
     """Add user."""
+    message = "Hi ya ll! Since you are all interested in hacking and are free on Saturday, I would suggest meeting on facebook headquarters. Btw, this group consists of Mete, Adi and Hamza, have fun!"
     db = Firebase()
     data = request.get_json()
     users.add(data['userId'])
@@ -46,8 +47,10 @@ def add_user():
     num = db.get_num_users()
     print(num)
     if num:
+        print("gcdjsa")
         for key, val in num.items():
-            send_message(key, "Hi ya'll! Since you are all interested in hacking and are free on Saturday, I would suggest meeting on facebook headquarters. Btw, this group consists of Mete, Adi and Hamza, have fun!")
+            print(key)
+            send_message(key, message)
     return jsonify({'message': True})
 
 
@@ -91,16 +94,18 @@ def left():
     """Leftover people in chat."""
     res = []
     data = request.args
-    for key, value in ready_activities.items():
-        if data['userId'] in value:
-            for id in value:
-                if id != data['userId']:
-                    res.append(id)
-            break
+    db = Firebase()
+    d = db.get_all_users()
+    for key, value in d.items():
+        if data['userId'] !== key:
+            res.append(key)
     return jsonify({"userIds": res})
 
 
-def send_message(realUserId, realMessage):
+def send_message(userId, message):
+
+    realUserId = f'"{userId}"'
+    realMessage = f'"{message}"'
     """Send meassage to user."""
     headers = {
         'Content-Type': 'application/json',
@@ -122,8 +127,7 @@ def send_message(realUserId, realMessage):
     realData = (recipient + id + realUserId + message + realMessage + lastStrin)
 
     response = requests.post('https://graph.facebook.com/v2.6/me/messages', headers=headers, params=params, data=realData)
-    db = Firebase()
-    db.add_message(message)
+    print(response.text)
     return jsonify({"message": True})
 
 @app.route('/sendMessage', methods=['POST'])

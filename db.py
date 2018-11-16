@@ -58,7 +58,8 @@ class Firebase:
     #     curr_acts = self.db.child('active').get().val()
     #     key = (data['location'], data['availability'], data['interest'])
     #     return {"message": True, "activity": key, "users": curr_acts[key]} if str(key) in curr_acts else {"message": False}
-
+    def get_all_users(self):
+        return self.db.child("users").get().val()
     def read_all_users(self):
         """Return all entries."""
         return self.db.child("activity").get().val()
